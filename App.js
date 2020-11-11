@@ -6,6 +6,7 @@ import ReduxThunk from 'redux-thunk';
 import RootComponent from './src/components/RootComponent';
 
 import authReducer from './src/store/reducers/auth';
+import restaurantReducer from './src/store/reducers/restaurant';
 import {init} from './src/helper/db';
 
 init()
@@ -19,6 +20,7 @@ init()
 
 const rootReducer = combineReducers({
   auth: authReducer,
+  restaurant: restaurantReducer,
 });
 
 const store = createStore(rootReducer, applyMiddleware(ReduxThunk));

@@ -1,4 +1,4 @@
-import {SET_USER_SESSON, SET_RESTAURANTS} from '../actions/auth';
+import {RESTAURANT_LIST, SET_RESTAURANTS} from '../actions/restaurant';
 
 const initialState = {
   restaurantList: [],

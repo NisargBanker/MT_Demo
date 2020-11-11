@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import Colors from './../../config/Theme';
 import Metrics from '../../config/Metrics';
-import {useDispatch} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 import Config from '../../config/index';
 import Utils from '../../utils/index';
 
@@ -20,34 +20,32 @@ import {
 } from '../../store/actions/restaurant';
 
 const DashboardScreen = (props) => {
-  const dispatch = useDispatch();
+  const restaurantList = useSelector(
+    (state) => state.restaurant.restaurantList,
+  );
 
-  const [availableUsers, setAvailableUsers] = useState([]);
+  const dispatch = useDispatch();
 
   useEffect(async () => {
     const isData = await Utils.MethodUtils.Storage.getData(
       Config.String.RESTAURANT_DATA,
     );
     if (isData) {
-      dispatch(loadRestaurant()).then((data) => {
-        setAvailableUsers(data);
-      });
+      dispatch(loadRestaurant());
     } else {
-      dispatch(getRestaurantList()).then((data) => {
-        setAvailableUsers(data);
-      });
+      dispatch(getRestaurantList());
     }
   }, []);
 
   const onRastaurantHandler = (index) => {
     props.navigation.navigate(Config.Route.RestaurantDetails, {
-      data: availableUsers[index],
+      data: restaurantList[index],
     });
   };
 
   const onMapHandler = (index) => {
     props.navigation.navigate(Config.Route.Map, {
-      data: availableUsers[index],
+      data: restaurantList[index],
     });
   };
 
@@ -56,7 +54,7 @@ const DashboardScreen = (props) => {
       <Text style={styles.header}>Restaurants</Text>
       <View style={styles.lessonBody}>
         <FlatList
-          data={availableUsers}
+          data={restaurantList !== undefined ? restaurantList : []}
           renderItem={({item, index}) => (
             <TouchableOpacity
               style={styles.rowItem}
